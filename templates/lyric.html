@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ heading }} | Emo on Song</title>
+    <link rel="icon" href="{{ url_for('static', filename='logo.ico') }}" type="image/x-icon">
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="background">
+		<div class="left">
+			<h1>{{ heading }}</h1>
+			{% for lyric_line in array_lyric %}
+				<p>{{ lyric_line }}</p>
+			{% endfor %}
+		</div>
+
+		<div class="right">
+			<canvas id="matplotlibSentimentChart" style="width:100%;max-width:700px"></canvas>
+		</div>
+    </div>
+
+	<script>
+		let mtplb_sentiment_scores = '{{ mtplb_sentiment_scores }}'
+		let mtplb_sentiment_scores_parsed = mtplb_sentiment_scores.slice(1, -1).trim().split(',').map(parseFloat)
+		let label_array = []
+
+		for (let index = 0; index <= mtplb_sentiment_scores_parsed.length; index++) {
+			label_array.push(index)
+		}
+
+		let ctx = document.getElementById('matplotlibSentimentChart').getContext('2d');
+		let myChart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels: label_array,
+				datasets: [{
+					label: 'Skor Sentimen',
+					data: mtplb_sentiment_scores_parsed
+				}]
+			}
+		});
+    </script>
+</body>
+</html>

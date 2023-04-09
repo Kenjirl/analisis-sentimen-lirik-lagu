@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Fredericka+the+Great&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background-image: linear-gradient(to bottom, #a6d3d0, #93c4c0);
+  border: none; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #f9bdbc; 
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b30000; 
+}
+
+input, button {
+  font-family: 'Inconsolata', monospace;
+  font-size: 1.2em;
+}
+
+.background {
+  display: flex;
+  background-image: url('bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.left {
+  width: 50%;
+  min-height: 100vh;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.title {
+  width: 80%;
+  font-family: 'Fredericka the Great', cursive;
+  font-size: 3em;
+  color: #ffffff;
+  text-shadow: 5px 3px 1px #b0d9d5;
+}
+
+.subtitle {
+  width: 100%;
+  padding-top: 2em;
+  font-family: 'Amatic SC', cursive;
+  font-size: 2em;
+  color: white;
+}
+
+.right {
+  width: 50%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input_form {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  font-family: 'Inconsolata', monospace;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: .5em;
+}
+
+.wrapper label {
+  font-size: 1.5em;
+  font-weight: 900;
+  color: #f9bdbc;
+  text-shadow: 1px 1px 1px #000000;
+}
+
+.wrapper input {
+  padding: .5em 1em;
+  border: none;
+  border-bottom: 2px solid #f9bdbc;
+  background-color: transparent;
+}
+
+input:is(:active, :focus) {
+  outline: none;
+}
+
+.hint {
+  width: 100%;
+}
+
+.hint b {
+  color: #f9bdbc;
+}
+
+button {
+  width: fit-content;
+  margin: 0 auto;
+  padding: .3em .9em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 900;
+  background-color: #f9bdbc;
+  outline: 2px solid transparent;
+  transition: all .5s ease-in-out;
+  color: #ffffff;
+}
+
+button:is(:hover, :focus) {
+  background-color: transparent;
+  outline: 2px solid #f9bdbc;
+  outline-offset: 5px;
+}

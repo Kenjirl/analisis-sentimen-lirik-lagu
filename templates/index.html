@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Emo on Song</title>
+    <link rel="icon" href="{{ url_for('static', filename='logo.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="background">
+        <div class="left">
+            <span class="title">Melancholy? Euphoria?</span>
+            <span class="title">Or maybe, Nostalgia?</span>
+            <span class="subtitle">Let's find out what emotion is conveyed in this song?</span>
+        </div>
+
+        <div class="right">
+            <form class="input_form" method="POST" action="{{ url_for('search_lyric') }}">
+                <div class="wrapper">
+                    <label for="song_title">Song Title :</label>
+                    <input type="text" name="song_title" id="song_title" placeholder="im yours">
+                </div>
+                
+                <div class="wrapper">
+                    <label for="author">Singer / Author / Artist :</label>
+                    <input type="text" name="author" id="author" placeholder="jason mraz">
+                </div>
+
+                <span class="hint"><b>*</b> please do not use any punctuation on title or author</span>
+
+                <button type="submit">Let's find out!</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
