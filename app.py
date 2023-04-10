@@ -2,7 +2,11 @@ from bs4 import BeautifulSoup
 import requests
 import re
 from flask import Flask, request, render_template
+# Sentiment with TextBlok
 from textblob import TextBlob
+# Sentiment with Natural Language Toolkit
+import nltk
+from nltk.sentiment import SentimentIntensityAnalyzer
 
 app = Flask(__name__, template_folder='templates')
 
@@ -28,39 +32,49 @@ def search_lyric():
 
         lyrics_html = soup.find_all('div', class_ = 'Lyrics__Container-sc-1ynbvzw-5 Dzxov')
 
-        final_lyric = ''
+        lyrics = []
 
-        for lyric_html in lyrics_html : 
-            final_lyric = final_lyric + re.sub('\[.*?\]', '', lyric_html.text)
+        for lyric_html in lyrics_html :
+            lyrics.extend([lyric for lyric in lyric_html.stripped_strings])
 
-        final_lyric = re.sub('\(.*?\)', '', final_lyric)
-        
-        final_lyric = re.sub(r'(\S)([A-Z])', r'\1\n\2', final_lyric)
-        final_lyric = re.sub(r'\s+([A-Z])', r'\n\1', final_lyric)
+        clean_lyrics = []
 
-        final_lyric = re.sub(',', '', final_lyric)
-        final_lyric = final_lyric.lower()
-        
-        array_lyric = final_lyric.split('\n')
+        for lyric in lyrics:
+            lyric = re.sub('\(.*?\)', '', lyric)
+            lyric = re.sub(',', '', lyric)
+            lyric = re.sub("'", "", lyric)
+            lyric = re.sub("`", "", lyric)
+            if '[' not in lyric:
+                clean_lyrics.append(lyric.lower())
 
-        # Sentiment Analyze with matplotlib method
-        sentiment_scores = []
+        # Sentiment Analyze with TextBlob method
+        tblb_sentiment_scores = []
 
-        for line in final_lyric.split("\n"):
-            sentiment = TextBlob(line).sentiment.polarity
-            sentiment_scores.append(sentiment)
+        for lyric in clean_lyrics:
+            tblb_score = TextBlob(lyric.lower()).sentiment.polarity
+            tblb_sentiment_scores.append(tblb_score)
+
+        # Sentiment Analyze with nltk method
+        sia = SentimentIntensityAnalyzer()
+        nltk_sentiment_scores = []
+
+        for lyric in clean_lyrics:
+            nltk_score = sia.polarity_scores(lyric.lower())
+            nltk_score['text'] = lyric.lower()
+            nltk_sentiment_scores.append(nltk_score)
 
         return render_template(
             'lyric.html',
-            array_lyric=array_lyric, 
+            array_lyric=lyrics, 
             heading=re.sub('-', ' ', song_title.title())+' by '+re.sub('-', ' ', author.title()), 
-            mtplb_sentiment_scores=sentiment_scores
+            tblb_sentiment_scores=tblb_sentiment_scores,
+            nltk_sentiment_scores=nltk_sentiment_scores
         )
 
     else:
         return render_template(
             'lyric.html',
-            array_lyric=['No lyrics were found base on your input'], 
+            array_lyric=['No lyrics were found base on your input','Make sure you did not make any typo or use any punctuation'], 
             heading='No data found'
         )
 

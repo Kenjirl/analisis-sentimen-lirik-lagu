@@ -11,33 +11,80 @@
 		<div class="left">
 			<h1>{{ heading }}</h1>
 			{% for lyric_line in array_lyric %}
-				<p>{{ lyric_line }}</p>
+				<p class="lyric_line">{{ lyric_line }}</p>
 			{% endfor %}
 		</div>
 
 		<div class="right">
-			<canvas id="matplotlibSentimentChart" style="width:100%;max-width:700px"></canvas>
+			<div>
+				<canvas id="tblbSentimentChart"></canvas>
+				<canvas id="nltkSentimentChart"></canvas>
+			</div>
 		</div>
     </div>
 
 	<script>
-		let mtplb_sentiment_scores = '{{ mtplb_sentiment_scores }}'
-		let mtplb_sentiment_scores_parsed = mtplb_sentiment_scores.slice(1, -1).trim().split(',').map(parseFloat)
+		let tblb_sentiment_scores = '{{ tblb_sentiment_scores }}'
+		let tblb_sentiment_scores_parsed = tblb_sentiment_scores.slice(1, -1).trim().split(',').map(parseFloat)
 		let label_array = []
 
-		for (let index = 0; index <= mtplb_sentiment_scores_parsed.length; index++) {
+		// console.log(tblb_sentiment_scores)
+		console.log(tblb_sentiment_scores_parsed)
+
+		for (let index = 0; index <= tblb_sentiment_scores_parsed.length; index++) {
 			label_array.push(index)
 		}
 
-		let ctx = document.getElementById('matplotlibSentimentChart').getContext('2d');
-		let myChart = new Chart(ctx, {
+		let tblbctx = document.getElementById('tblbSentimentChart').getContext('2d');
+		let tblbChart = new Chart(tblbctx, {
 			type: 'line',
 			data: {
 				labels: label_array,
 				datasets: [{
-					label: 'Skor Sentimen',
-					data: mtplb_sentiment_scores_parsed
+					label: 'Sentiment Score using TextBlob',
+					data: tblb_sentiment_scores_parsed,
+					borderColor: "#7AA874"
 				}]
+			}
+		});
+
+		let nltk_sentiment_scores = '{{ nltk_sentiment_scores }}';
+		nltk_sentiment_scores = nltk_sentiment_scores.replace(/&#39;/g, '"')
+		let nltk_sentiment_scores_parsed = JSON.parse(nltk_sentiment_scores)
+		console.log(nltk_sentiment_scores_parsed)
+
+		let nltkPosData = []
+		let nltkNeuData = []
+		let nltkNegData = []
+
+		for (let index = 0; index < nltk_sentiment_scores_parsed.length; index++) {
+			nltkPosData.push(nltk_sentiment_scores_parsed[index].pos);
+			nltkNeuData.push(nltk_sentiment_scores_parsed[index].neu);
+			nltkNegData.push(nltk_sentiment_scores_parsed[index].neg);
+		}
+
+		let nltkctx = document.getElementById('nltkSentimentChart').getContext('2d');
+		let nltkSentimentChart = new Chart(nltkctx, {
+			type: 'line',
+			data: {
+				labels: label_array,
+				datasets: [
+					{
+						label: 'Pos',
+						data: nltkPosData,
+						borderColor: "#62CDFF"
+					},
+					{
+						label: 'Neu',
+						data: nltkNeuData,
+						borderColor: "#FFD93D"
+					},
+					{
+						label: 'Neg',
+						data: nltkNegData,
+						borderColor: "#D21312"
+					},
+				]
 			}
 		});
     </script>

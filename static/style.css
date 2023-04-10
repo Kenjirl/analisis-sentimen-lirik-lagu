@@ -53,8 +53,8 @@ input, button {
   width: 80%;
   font-family: 'Fredericka the Great', cursive;
   font-size: 3em;
-  color: #ffffff;
   text-shadow: 5px 3px 1px #b0d9d5;
+  color: #ffffff;
 }
 
 .subtitle {
@@ -62,7 +62,23 @@ input, button {
   padding-top: 2em;
   font-family: 'Amatic SC', cursive;
   font-size: 2em;
-  color: white;
+}
+
+.left:has(>h1) {
+  justify-content: start;
+}
+
+h1 {
+  width: 100%;
+  margin-bottom: .5em;
+  font-family: 'Fredericka the Great', cursive;
+  text-align: center;
+  color: #ffffff;
+  text-shadow: 5px 3px 1px #b0d9d5;
+}
+
+.lyric_line {
+  font-family: 'Inconsolata', monospace;
 }
 
 .right {
@@ -113,6 +129,13 @@ input:is(:active, :focus) {
   color: #f9bdbc;
 }
 
+.hint a {
+  color: #f9bdbc;
+  text-shadow: 1px 1px 1px #000000;
+  text-decoration: none;
+  font-weight: 900;
+}
+
 button {
   width: fit-content;
   margin: 0 auto;
@@ -131,4 +154,26 @@ button:is(:hover, :focus) {
   background-color: transparent;
   outline: 2px solid #f9bdbc;
   outline-offset: 5px;
+}
+
+.right:has(canvas) {
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+div:has(>canvas) {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 50%;
+  padding: 1em;
+}
+
+canvas {
+  width: 100%;
+  max-width: 700px;
+}
+
+canvas:nth-child(1) {
+  margin-bottom: 1em;
 }
